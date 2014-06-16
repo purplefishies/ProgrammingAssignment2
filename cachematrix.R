@@ -10,8 +10,10 @@ makeCacheMatrix <- function(x = matrix()) {
     inverted <- matrix(nrow=dim(x)[1], ncol=dim(x)[2])
     x_copy <- x
     dirty <- TRUE
-    # Get/Setter for cacheMatrix base matrix.
-    # 
+
+    # Get/Setter for cacheMatrix base matrix. This function
+    # will only set the "dirty" flag for the cacheMatrix iff
+    # the new matrix is different than the previous version.
     set <- function(y) {
         if( !identical(y,x_copy) ) {
             x_copy <<- y
@@ -77,9 +79,9 @@ print.cacheMatrix = function(obj) {
 
 ## cacheSolve(x,...)
 # 
-# First determines if the matrix has been "dirtied" by any of
+# Determines if the matrix has been "dirtied" by any of
 # the last modifications, and if so, then calculates the inverted
-# matrix , sets it and then returns it.
+# matrix with "solve()" , sets it and then returns it.
 #
 cacheSolve <- function(x,...) {
     ## Return a matrix that is the inverse of 'x'
