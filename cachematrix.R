@@ -60,15 +60,15 @@ print.cacheMatrix = function(obj) {
 # matrix setter.
 `[<-.cacheMatrix` = function(obj,i,j,..., value) {
     args <- list(...)
-    printf("args was %s\n", class(args))
-    printf("i was %s",class(i))
+    ## printf("args was %s\n", class(args))
+    ## printf("i was %s",class(i))
     tmp <- obj$get()
     if( ! missing(j) ) { 
-        printf("j was %s\n",class(j))
+        ## printf("j was %s\n",class(j))
         tmp[i] <- value
         obj$set(tmp)
     } else {
-        printf("j was missing\n");
+        ## printf("j was missing\n");
         tmp[i,j] <- value
         obj$set(tmp)
     }
