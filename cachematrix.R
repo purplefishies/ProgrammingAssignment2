@@ -1,10 +1,20 @@
 ##
-# cacheMatrix class. This class maintains two matrix representations
+# The following code provides two key functions: makeCacheMatrix() and
+# cacheSolve(). makeCacheMatrix() returns an object that is known as the
+# cacheMatrix class.  
+#
+# cacheMatrix class: A class that maintains two matrix representations
 # 1. the initial matrix a.k.a "base matrix"
 # 2. the inverted version of the "base matrix"
 #
 # - the inverted matrix will only be updated if the main matrix
 #   is "dirtied" : if the underlying matrix has any values changed.
+
+##
+# makeCacheMatrix: a constructor for building a "cacheMatrix" (see above)
+# class from a regular matrix. This class will have various methods that
+# can act on it (see comments below ) as well as "friend" methods that
+# can access it using R's  particular FUNCTION.DATATYPE construct.
 #
 makeCacheMatrix <- function(x = matrix()) {
     inverted <- matrix(nrow=dim(x)[1], ncol=dim(x)[2])
@@ -42,13 +52,30 @@ makeCacheMatrix <- function(x = matrix()) {
     tmp
 }
 
+## cacheSolve(x,...)
+# 
+# Determines if the matrix has been "dirtied" by any of
+# the last modifications, and if so, then calculates the inverted
+# matrix with "solve()" , sets it and then returns it.
+cacheSolve <- function(x,...) {
+    ## Return a matrix that is the inverse of 'x'
+    if( x$modified() ) {
+        retval <- x$setinv( solve(x$get()) )
+    } else {
+        printf("Nonmodified\n")
+        retval <- x$getinv()
+    }
+    retval
+}
+
+#--------------- EXTRA DEBUGGING FUNCTIONS -------------------
+
 # Pretty prints out a cacheMatrix as if
-# it was a regular matrix
+# it was a regular matrix. Debugging friendly
 print.cacheMatrix = function(obj) {
     print(obj$get())
 }
 
-#
 # [] operator for accessing the cacheMatrix, that
 # just passes the [] operator onto the internal matrix
 #
@@ -59,7 +86,7 @@ print.cacheMatrix = function(obj) {
 # []<- operator for allow us to modify the contents
 # of the cacheMatrix. Does some basic argument checking
 # and then passes along the arguments to the internal
-# matrix setter.
+# matrix setter. Not as robust as other [<- operator functions
 `[<-.cacheMatrix` = function(obj,i,j,..., value) {
     args <- list(...)
     ## printf("args was %s\n", class(args))
@@ -76,22 +103,3 @@ print.cacheMatrix = function(obj) {
     }
     obj
 }
-
-## cacheSolve(x,...)
-# 
-# Determines if the matrix has been "dirtied" by any of
-# the last modifications, and if so, then calculates the inverted
-# matrix with "solve()" , sets it and then returns it.
-#
-cacheSolve <- function(x,...) {
-    ## Return a matrix that is the inverse of 'x'
-    if( x$modified() ) {
-        retval <- x$setinv( solve(x$get()) )
-    } else {
-        printf("Nonmodified\n")
-        retval <- x$getinv()
-    }
-    retval
-}
-
-
