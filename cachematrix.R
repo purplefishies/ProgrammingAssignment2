@@ -60,7 +60,7 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x,...) {
     ## Return a matrix that is the inverse of 'x'
     if( x$modified() ) {
-        retval <- x$setinv( solve(x$get()) )
+        retval <- x$setinv( solve(x$get(), ... ) )
     } else {
         printf("Nonmodified\n")
         retval <- x$getinv()
