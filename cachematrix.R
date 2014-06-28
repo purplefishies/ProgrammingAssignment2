@@ -62,7 +62,7 @@ cacheSolve <- function(x,...) {
     if( x$modified() ) {
         retval <- x$setinv( solve(x$get(), ... ) )
     } else {
-        printf("Nonmodified\n")
+        message("Nonmodified\n")
         retval <- x$getinv()
     }
     retval
